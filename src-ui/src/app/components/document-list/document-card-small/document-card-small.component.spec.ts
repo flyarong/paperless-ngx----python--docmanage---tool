@@ -1,11 +1,6 @@
 import { DatePipe } from '@angular/common'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-} from '@angular/core/testing'
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { RouterTestingModule } from '@angular/router/testing'
 import {
   NgbPopoverModule,
@@ -117,18 +112,11 @@ describe('DocumentCardSmallComponent', () => {
     ).toHaveLength(6)
   })
 
-  it('should show preview on mouseover after delay to preload content', fakeAsync(() => {
-    component.mouseEnterPreview()
-    expect(component.popover.isOpen()).toBeTruthy()
-    expect(component.popoverHidden).toBeTruthy()
-    tick(600)
-    expect(component.popoverHidden).toBeFalsy()
+  it('should try to close the preview on mouse leave', () => {
+    component.popupPreview = {
+      close: jest.fn(),
+    } as any
     component.mouseLeaveCard()
-
-    component.mouseEnterPreview()
-    tick(100)
-    component.mouseLeavePreview()
-    tick(600)
-    expect(component.popover.isOpen()).toBeFalsy()
-  }))
+    expect(component.popupPreview.close).toHaveBeenCalled()
+  })
 })

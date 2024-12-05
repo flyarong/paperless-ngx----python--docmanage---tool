@@ -216,6 +216,17 @@ def _parse_beat_schedule() -> dict:
                 "expires": 23.0 * 60.0 * 60.0,
             },
         },
+        {
+            "name": "Check and run scheduled workflows",
+            "env_key": "PAPERLESS_WORKFLOW_SCHEDULED_TASK_CRON",
+            # Default hourly at 5 minutes past the hour
+            "env_default": "5 */1 * * *",
+            "task": "documents.tasks.check_scheduled_workflows",
+            "options": {
+                # 1 minute before default schedule sends again
+                "expires": 59.0 * 60.0,
+            },
+        },
     ]
     for task in tasks:
         # Either get the environment setting or use the default
@@ -1184,6 +1195,7 @@ DEFAULT_FROM_EMAIL: Final[str] = os.getenv("PAPERLESS_EMAIL_FROM", EMAIL_HOST_US
 EMAIL_USE_TLS: Final[bool] = __get_boolean("PAPERLESS_EMAIL_USE_TLS")
 EMAIL_USE_SSL: Final[bool] = __get_boolean("PAPERLESS_EMAIL_USE_SSL")
 EMAIL_SUBJECT_PREFIX: Final[str] = "[Paperless-ngx] "
+EMAIL_ENABLED = EMAIL_HOST != "localhost" or EMAIL_HOST_USER != ""
 if DEBUG:  # pragma: no cover
     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
     EMAIL_FILE_PATH = BASE_DIR / "sent_emails"

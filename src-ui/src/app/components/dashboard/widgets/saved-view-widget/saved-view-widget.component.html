@@ -29,7 +29,7 @@
       </thead>
       <tbody>
         @if (loading) {
-          @for (i of [].constructor(pageSize); track i) {
+          @for (i of placeholderArray; track i) {
             <tr>
               @for (field of displayFields; track field; let j = $index) {
                 <td class="py-2 py-md" [ngClass]="{ 'd-none d-md-table-cell': j > 1 }">
@@ -103,7 +103,7 @@
   } @else if (displayMode === DisplayMode.SMALL_CARDS) {
     <div content class="row row-cols-paperless-cards my-n2">
       @if (loading) {
-        @for (i of [].constructor(pageSize); track i) {
+        @for (i of placeholderArray; track i) {
           <pngx-document-card-small class="p-0"></pngx-document-card-small>
         }
       }
@@ -123,7 +123,7 @@
   } @else if (displayMode === DisplayMode.LARGE_CARDS) {
     <div content class="row my-n2">
       @if (loading) {
-        @for (i of [].constructor(pageSize); track i) {
+        @for (i of placeholderArray; track i) {
           <pngx-document-card-large></pngx-document-card-large>
         }
       }

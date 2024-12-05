@@ -56,8 +56,12 @@ export class SavedViewWidgetComponent
 
   private customFields: CustomField[] = []
 
-  get pageSize(): number {
-    return this.savedView?.page_size ?? DEFAULT_DASHBOARD_VIEW_PAGE_SIZE
+  get placeholderArray(): Array<number> {
+    return [
+      ...Array(
+        this.savedView?.page_size ?? DEFAULT_DASHBOARD_VIEW_PAGE_SIZE
+      ).keys(),
+    ]
   }
 
   constructor(
@@ -137,7 +141,7 @@ export class SavedViewWidgetComponent
     this.documentService
       .listFiltered(
         1,
-        this.pageSize,
+        this.savedView?.page_size ?? DEFAULT_DASHBOARD_VIEW_PAGE_SIZE,
         this.savedView.sort_field,
         this.savedView.sort_reverse,
         this.savedView.filter_rules,
